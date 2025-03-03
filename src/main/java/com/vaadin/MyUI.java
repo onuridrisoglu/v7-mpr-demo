@@ -1,12 +1,14 @@
 package com.vaadin;
 
-import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.router.Route;
+import com.vaadin.mpr.core.HasLegacyComponents;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
@@ -27,12 +29,15 @@ import java.util.stream.Collectors;
  * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be
  * overridden to add component to the user interface and initialize non-component functionality.
  */
-@Theme("mytheme")
-public class MyUI extends UI {
+@Route("")
+public class MyUI extends Div implements HasLegacyComponents {
 
+    public MyUI() {
+        setSizeFull();
+        init();
+    }
 
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
+    protected void init() {
 
         final VerticalLayout layout = new VerticalLayout();
 
@@ -53,11 +58,7 @@ public class MyUI extends UI {
         layout.setSpacing(true);
         layout.setHeight("100%");
 
-        setContent(layout);
+        add(layout);
     }
 
-    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-    public static class MyUIServlet extends VaadinServlet {
-    }
 }
